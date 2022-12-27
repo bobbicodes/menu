@@ -15,19 +15,16 @@
        (let [dom    (o/get e "target")
              file   (o/getValueByKeys dom #js ["files" 0])
              reader (js/FileReader.)]
+         (println file)
          (.readAsDataURL reader file)
          (set! (.-onload reader)
                #(reset! file-atom (-> % .-target .-result)))))}]])
 
-@file-atom
-
 (defn app []
   [:div#app
    [import-image]
-   
    [:img {:src   @file-atom
-          :width 400
-          }]])
+          :width 400}]])
 
 (defn render []
   (rdom/render [app]
