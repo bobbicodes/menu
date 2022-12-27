@@ -1,5 +1,5 @@
 {
-  "name": "shadow-reagent",
+  "name": "menu",
   "version": "1.0.0",
   "description": "Like the [official quickstart](https://github.com/thheller/shadow-cljs), but without the extra steps.",
   "main": "index.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/porkostomus/shadow-reagent.git"
+    "url": "git+https://github.com/btowerscoding/menu.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/porkostomus/shadow-reagent/issues"
+    "url": "https://github.com/btowerscoding/menu/issues"
   },
-  "homepage": "https://github.com/porkostomus/shadow-reagent#readme",
+  "homepage": "https://github.com/btowerscoding/menu#readme",
   "dependencies": {
     "react": "17.0.2",
     "react-dom": "17.0.2"
