@@ -5,29 +5,34 @@
 
 (defonce !files (r/atom []))
 
+(defn upload-images [e]
+    (let [dom    (o/get e "target")
+          files (o/get dom "files")]
+      (reset! !files [])
+      (doseq [file files]
+        (let [reader (js/FileReader.)]
+          (.readAsDataURL reader file)
+          (set! (.-onload reader)
+                #(swap! !files conj (-> % .-target .-result)))))))
+
 (defn import-images []
   [:div
    [:h1 "Import images"]
    [:input#input
     {:type      "file"
      :multiple true
-     :on-change
-     (fn [e]
-       (let [dom    (o/get e "target")
-             files (o/get dom "files")]
-         (doseq [file files]
-           (let [reader (js/FileReader.)]
-             (.readAsDataURL reader file)
-             (set! (.-onload reader)
-                   #(swap! !files conj (-> % .-target .-result)))))))}]])
+     :on-change upload-images}]])
+
+(defn images [files]
+  (into [:div#images]
+        (for [file files]
+          [:img {:src   file
+                 :width 400 :height 400}])))
 
 (defn app []
   [:div#app
    [import-images]
-   (into [:div#images]
-         (for [file @!files]
-           [:img {:src   file
-                  :width 400}]))])
+   [images @!files]])
 
 (defn render []
   (rdom/render [app]
