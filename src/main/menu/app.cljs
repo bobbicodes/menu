@@ -10,12 +10,14 @@
    [:h1 "Import image"]
    [:input#input
     {:type      "file"
+     :multiple true
      :on-change
      (fn [e]
        (let [dom    (o/get e "target")
+             files (o/get dom "files")
              file   (o/getValueByKeys dom #js ["files" 0])
              reader (js/FileReader.)]
-         (println file)
+         (js/console.log (o/get dom "files"))
          (.readAsDataURL reader file)
          (set! (.-onload reader)
                #(reset! file-atom (-> % .-target .-result)))))}]])
