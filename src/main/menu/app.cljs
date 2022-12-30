@@ -5,44 +5,6 @@
 
 (defonce !files (r/atom []))
 (defonce !bg (r/atom nil))
-(defonce posX (r/atom 0))
-(defonce dom-node (r/atom nil))
-(def w (.-innerWidth js/window))
-(def h (.-innerHeight js/window))
-(def image (js/Image.))
-
-(defn draw []
-  (let [canvas (.-firstChild @dom-node)
-        ctx    (.getContext canvas "2d")]
-    (set! (.-width canvas) w)
-    (set! (.-height canvas) h)
-    (.fillRect ctx (- (/ w 2)) (- (/ h 2)) w h)
-    (.drawImage ctx image 0 0 
-                (.-width image) (.-height image)
-                @posX -74 
-                (/ (.-width image) 2) (/ (.-height image) 2))
-    (.requestAnimationFrame js/window draw)))
-
-(defn draw-canvas-contents [canvas]
-    (set! (.-src image) (first @!files))
-    (set! (.-onload image) draw))
-
-(defn div-with-canvas []
-    (r/create-class
-     {:component-did-update
-      (fn [this]
-        (draw-canvas-contents (.-firstChild @dom-node)))
-
-      :component-did-mount
-      (fn [this]
-        (reset! dom-node (rdom/dom-node this)))
-
-      :reagent-render
-      (fn []
-        [:div.with-canvas
-         [:canvas (if-let [node @dom-node]
-                    {:width w
-                     :height h})]])}))
 
 (defn upload-images [e]
     (let [dom    (o/get e "target")
@@ -83,7 +45,7 @@
   (into [:div.flex-container]
         (for [file files]
           [:img.flex-item {:src   file
-                 :width 400 :height 400
+                 :width 200 :height 200
                  }])))
 
 (defn app []
@@ -91,9 +53,7 @@
      {:style {:background-image (str "url(" @!bg ")")}}
     [import-bg]
     [import-images]
-    
-    [images @!files]
-    [div-with-canvas]])
+    [images @!files]])
 
 (defn render []
   (rdom/render [app]
