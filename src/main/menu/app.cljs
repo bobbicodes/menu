@@ -24,7 +24,8 @@
       (let [reader (js/FileReader.)]
         (.readAsDataURL reader file)
         (set! (.-onload reader)
-              #(reset! !bg (-> % .-target .-result)))))))
+              #(do (reset! !bg (-> % .-target .-result))
+                   (set! (.. js/document -body -style -backgroundImage) (str "url(" (-> % .-target .-result) ")"))))))))
 
 (defn import-bg []
   [:div
@@ -47,23 +48,6 @@
           [:img.flex-item {:src   file
                  :width 200 :height 200}])))
 
-
-;(def url (first @!files))
-;(def img (js/Image.))
-;(set! (.-src img) url)
-;(def canvas (.getElementById js/document "canvas"))
-;(def ctx    (.getContext canvas "2d"))
-;(set! (.-onload img) (.drawImage ctx img 0 0))
-
-(defn original [] 
-  (let [url (first @!files)
-        img (js/Image.)
-        _ (set! (.-src img) url)
-        canvas (.getElementById js/document "canvas")
-        ctx    (.getContext canvas "2d")
-        _ (set! (.-onload img) (.drawImage ctx img 0 0))]
-    (.drawImage ctx img 0 0)))
-
 (defn transparent [r g b]
   (let [url (first @!files)
         img (js/Image.)
@@ -82,21 +66,7 @@
       (aset data i 0))
     (.putImageData ctx imageData 0 0)))
 
-(let [url (first @!files)
-      img (js/Image.)
-      _ (set! (.-src img) url)
-      canvas (.getElementById js/document "canvas")
-      ctx    (.getContext canvas "2d")
-      _ (set! (.-onload img) (.drawImage ctx img 0 0))
-      _  (.drawImage ctx img 0 0)
-      imageData (.getImageData ctx 0 0 (.-width canvas) (.-height canvas))
-      data (.-data imageData)]
-  (take 50 data))
-
-
-(set! (.. js/document -body -style -backgroundImage) (str "url(" @!bg ")"))
-
-(transparent 255 255 255)
+;(transparent 255 255 255)
 
 (defn app []
    [:div#app
