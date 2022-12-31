@@ -48,7 +48,7 @@
           [:img.flex-item {:src   file
                  :width 200 :height 200}])))
 
-(defn transparent [r g b]
+(defn transparent [r g b similarity]
   (let [url (first @!files)
         img (js/Image.)
         _ (set! (.-src img) url)
@@ -59,14 +59,14 @@
         imageData (.getImageData ctx 0 0 (.-width canvas) (.-height canvas))
         data (.-data imageData)]
     (doseq [i (filter #(and
-                        (= r (aget data (- % 3)))
-                        (= g (aget data (- % 2)))
-                        (= b (aget data (- % 1))))
+                        (< (- r similarity) (aget data (- % 3)) (+ similarity r))
+                        (< (- g similarity) (aget data (- % 2)) (+ similarity g))
+                        (< (- b similarity) (aget data (- % 1)) (+ similarity b)))
                       (range 3 (.-length data) 4))]
       (aset data i 0))
     (.putImageData ctx imageData 0 0)))
 
-;(transparent 255 255 255)
+;(transparent 255 255 255 10)
 
 (defn app []
    [:div#app
