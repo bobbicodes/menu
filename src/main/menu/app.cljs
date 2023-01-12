@@ -47,10 +47,50 @@
         (for [file files]
           [:img.flex-item {:src   file
                  :width 200 :height 200}])))
+(defn img
+  "Takes an image url and returns a js Image object
+   with its `src` property set to it."
+  [url]
+  (let [i (js/Image.)]
+    (set! (.-src (js/Image.)) url)
+    i))
 
-(defn transparent [r g b similarity]
-  (let [url (first @!files)
-        img (js/Image.)
+
+(defn draw 
+  "Takes an HTMLImageElement object and 
+   draws it to the canvas. Returns the same object."
+  [img]
+  (let [canvas (.getElementById js/document "canvas")
+        ctx (.getContext canvas "2d")
+        _ (set! (.-onload img) (.drawImage ctx img 0 0))
+        _ (.drawImage ctx img 0 0)]
+    img))
+
+(defn canvasData 
+  "Takes an HTMLCanvasElement and returns an ImageData object, 
+   uInt8Clamped array of RGBA values"
+  [canvas]
+  (.getImageData (.getContext canvas "2d") 0 0 
+                 (.-width canvas) (.-height canvas)))
+
+(defn imageData
+  "Takes an HTMLCanvasElement and returns an ImageData object, 
+   uInt8Clamped array of RGBA values"
+  [canvas]
+  (.getImageData (.getContext canvas "2d") 0 0
+                 (.-width canvas) (.-height canvas)))
+
+(defn chroma [data r g b similarity]
+  (doseq [i (filter #(and
+                      (< (- r similarity) (aget data (- % 3)) (+ similarity r))
+                      (< (- g similarity) (aget data (- % 2)) (+ similarity g))
+                      (< (- b similarity) (aget data (- % 1)) (+ similarity b)))
+                    (range 3 (.-length data) 4))]
+    (aset data i 0))
+  data)
+
+(defn chromakey [url r g b similarity]
+  (let [img (js/Image.)
         _ (set! (.-src img) url)
         canvas (.getElementById js/document "canvas")
         ctx    (.getContext canvas "2d")
@@ -58,15 +98,11 @@
         _  (.drawImage ctx img 0 0)
         imageData (.getImageData ctx 0 0 (.-width canvas) (.-height canvas))
         data (.-data imageData)]
-    (doseq [i (filter #(and
-                        (< (- r similarity) (aget data (- % 3)) (+ similarity r))
-                        (< (- g similarity) (aget data (- % 2)) (+ similarity g))
-                        (< (- b similarity) (aget data (- % 1)) (+ similarity b)))
-                      (range 3 (.-length data) 4))]
-      (aset data i 0))
-    (.putImageData ctx imageData 0 0)))
+    (chroma data r g b similarity)
+    (.putImageData ctx imageData 0 0)
+    imageData))
 
-;(transparent 255 255 255 10)
+;(chromakey (first @!files) 255 255 255 15)
 
 (defn app []
    [:div#app
