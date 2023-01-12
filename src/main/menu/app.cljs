@@ -47,38 +47,6 @@
         (for [file files]
           [:img.flex-item {:src   file
                  :width 200 :height 200}])))
-(defn img
-  "Takes an image url and returns a js Image object
-   with its `src` property set to it."
-  [url]
-  (let [i (js/Image.)]
-    (set! (.-src (js/Image.)) url)
-    i))
-
-
-(defn draw 
-  "Takes an HTMLImageElement object and 
-   draws it to the canvas. Returns the same object."
-  [img]
-  (let [canvas (.getElementById js/document "canvas")
-        ctx (.getContext canvas "2d")
-        _ (set! (.-onload img) (.drawImage ctx img 0 0))
-        _ (.drawImage ctx img 0 0)]
-    img))
-
-(defn canvasData 
-  "Takes an HTMLCanvasElement and returns an ImageData object, 
-   uInt8Clamped array of RGBA values"
-  [canvas]
-  (.getImageData (.getContext canvas "2d") 0 0 
-                 (.-width canvas) (.-height canvas)))
-
-(defn imageData
-  "Takes an HTMLCanvasElement and returns an ImageData object, 
-   uInt8Clamped array of RGBA values"
-  [canvas]
-  (.getImageData (.getContext canvas "2d") 0 0
-                 (.-width canvas) (.-height canvas)))
 
 (defn chroma [data r g b similarity]
   (doseq [i (filter #(and
@@ -89,20 +57,45 @@
     (aset data i 0))
   data)
 
-(defn chromakey [url r g b similarity]
+(defn x-pos [x n]
+  (let [rows (.ceil js/Math (.sqrt js/Math n))
+        cols (.ceil js/Math (/ n rows))]
+    (nth (cycle (range 1 (inc cols))) (dec x))))
+
+(defn y-pos [x n]
+  (let [rows (.ceil js/Math (.sqrt js/Math n))
+        cols (.ceil js/Math (/ n rows))]
+(nth (mapcat #(repeat (inc cols) %) (range 1 (inc x))) x)))
+
+(defn render-image [url n]
   (let [img (js/Image.)
         _ (set! (.-src img) url)
         canvas (.getElementById js/document "canvas")
         ctx    (.getContext canvas "2d")
-        _ (set! (.-onload img) (.drawImage ctx img 0 0))
-        _  (.drawImage ctx img 0 0)
+        scale 0.125
+        width (* (.-width img) scale)
+        height (* (.-height img) scale)
+        x (* width (dec (x-pos n (count @!files))))
+        y (- (* height (y-pos n (count @!files))) height)
+        _ (set! (.-onload img) (.drawImage ctx img x y width height))
         imageData (.getImageData ctx 0 0 (.-width canvas) (.-height canvas))
         data (.-data imageData)]
-    (chroma data r g b similarity)
+    (chroma data 255 255 255 15)
     (.putImageData ctx imageData 0 0)
-    imageData))
+    {:image-num n
+     :scale scale
+     :width width
+     :height height
+     :x x :y y
+     :pos [(x-pos n (count @!files)) (y-pos n (count @!files))]}))
 
-;(chromakey (first @!files) 255 255 255 15)
+(comment
+  (doseq [n (range 1 (count @!files))]
+    (render-image (nth @!files n) n))
+
+  (doseq [n (range 1 (count @!files))]
+    (render-image (first @!files) n))
+  )
 
 (defn app []
    [:div#app
