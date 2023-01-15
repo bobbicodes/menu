@@ -124,21 +124,21 @@
    [:rect {:x      (- (/ 3840 2) (/ @label-width 2))
            :y      (/ @label-height 10)
            :width  @label-width
-           :height (- @label-height 50)
+           :height (* @label-height 0.85)
            :rx     25
            :fill   "#c9d3dd90"}]
    [:text#label
     {:x           (- (/ 3840 2) (/ @label-width 2))
-     :y           230
+     :y           180
      :font-weight 1000
-     :font-family "Pacifico"
+     :font-family "Brush Script MT"
      :fill        "white"
      :font-size   192}
     s]
    [:text
     {:x           (- (/ 3840 2) (/ @label-width 2))
-     :y           230
-     :font-family "Pacifico"
+     :y           180
+     :font-family "Brush Script MT"
      :fill        "green"
      :font-size   192}
     s]])
@@ -153,7 +153,8 @@
                 :cols  48
                 :value (str (into [] (map dimensions @!files)))
                 :read-only true}]
-    [:svg#bg {:width    "100%"
+    [:svg#svg-bg {:xmlns "http://www.w3.org/2000/svg"
+                  :width    "100%"
               :view-box "0 0 3840 2160"
               :on-load (fn [_] 
                          (reset! label-width (svg-width "label"))
@@ -161,8 +162,49 @@
      [:image {:href "img\\tinctures\\bg-tinctures.png"}]
      [logo 0]
      [logo 3300]
-     [label "CBD Tinctures"]
-      ]])
+     [label "CBD Tinctures"]]
+    ;[:div#png-container]
+    ])
+
+(defn svg-string [el]
+  (let [serializer (js/XMLSerializer.)]
+    (.serializeToString serializer (.getElementById js/document el))))
+
+(let [canvas   (.getElementById js/document "canvas")
+      ctx      (.getContext canvas "2d")
+      svg      (js/Blob. [(svg-string "svg-bg")] (clj->js {:type "image/svg+xml;charset=utf-8"}))
+      url      (js/URL.createObjectURL svg)
+      img      (js/Image.)
+      bg-img   (js/Image.)
+      logo-src "img\\happy-hemp-trans.svg"
+      logo-img (js/Image.)
+      bg-src   "img\\tinctures\\bg-tinctures.png"
+      _        (set! (.-globalCompositeOperation ctx) "overlay")
+      _        (set! (.-src bg-img) bg-src)
+      _        (set! (.-onload bg-img)  
+                     #(do (.drawImage ctx bg-img 0 0)))
+      _        (set! (.-src img) url)
+      _        (set! (.-onload img)
+                     #(do (.drawImage ctx img 0 0)
+                          (let [png       (.toDataURL canvas "image/png")
+                                container (.getElementById js/document "png-container")]
+                            (set! (.-innerHTML container) (str "<img src=\"" png "\"/>")))))
+      _        (set! (.-src logo-img) logo-src)
+      _        (set! (.-onload logo-img)
+                     #(do (.drawImage ctx logo-img 0 0 500 500)
+                          (.drawImage ctx logo-img 3300 0 500 500)))]
+  url)
+
+(defn download-blob [file-name blob]
+  (let [object-url (js/URL.createObjectURL blob)
+        anchor-element
+        (doto (js/document.createElement "a")
+          (-> .-href (set! object-url))
+          (-> .-download (set! file-name)))]
+    (.appendChild (.-body js/document) anchor-element)
+    (.click anchor-element)
+    (.removeChild (.-body js/document) anchor-element)
+    (js/URL.revokeObjectURL object-url)))
 
 (defn render []
   (rdom/render [app]
