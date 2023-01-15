@@ -58,14 +58,12 @@
   data)
 
 (defn x-pos [x n]
-  (let [rows (.ceil js/Math (.sqrt js/Math n))
-        cols (.ceil js/Math (/ n rows))]
+  (let [cols (.ceil js/Math (.sqrt js/Math n))]
     (nth (cycle (range 1 (inc cols))) (dec x))))
 
 (defn y-pos [x n]
-  (let [rows (.ceil js/Math (.sqrt js/Math n))
-        cols (.ceil js/Math (/ n rows))]
-(nth (mapcat #(repeat (inc cols) %) (range 1 (inc x))) x)))
+  (let [cols (.ceil js/Math (.sqrt js/Math n))]
+    (nth (mapcat #(repeat cols %) (range 1 (inc x))) x)))
 
 (defn render-image [url n]
   (let [img (js/Image.)
@@ -97,13 +95,54 @@
     (render-image (first @!files) n))
   )
 
-(defn app []
+(defn dimensions [url]
+  (let [img (js/Image.)
+        _ (set! (.-src img) url)]
+    [(.-width img)
+     (.-height img)]))
+
+ (defn svg-width [el]
+   (.-width (.getBBox (.getElementById js/document el))))
+
+ (defn svg-height [el]
+   (.-height (.getBBox (.getElementById js/document el))))
+
+(defn logo [x]
+   [:g [:rect {:x x :y 40
+               :width 500 :height 500
+               :rx 25 :fill "#c9d3dd90"}]
+    [:image {:href "img\\happy-hemp-trans.svg"
+             :width 500 :x x}]])
+
+ (defn app []
    [:div#app
-     {:style {:background-image (str "url(" @!bg ")")}}
+    {:style {:background-image (str "url(" @!bg ")")}}
     [import-bg]
     [import-images]
-    [images @!files]])
-
+    [images @!files]
+    [(fn []
+        [:textarea {:rows      10
+                    :cols      48
+                    :value     (str (into [] (map dimensions @!files)))}])]
+    [:svg {:width    "100%"
+           :view-box "0 0 3840 2160"}
+     [:image {:href "img\\tinctures\\bg-tinctures.png"}]
+     [logo 0]
+     [logo 3300]
+     [:rect {:x      (- (/ 3840 2) (/ (svg-width "cbdtinturesgreen") 2)) 
+             :y      40 
+             :width  (svg-width "cbdtinturesgreen") 
+             :height (svg-height "cbdtinturesgreen") 
+             :rx     25
+             :fill   "#c9d3dd90"}]
+     [:text#cbdtinturesgreen 
+      {:x           (- (/ 3840 2) (/ (svg-width "cbdtinturesgreen") 2))
+       :y           280
+       :font-family "Pacifico"
+       :fill        "green"
+       :font-size   192}
+      "CBD Tinctures"]]])
+ 
 (defn render []
   (rdom/render [app]
             (.getElementById js/document "root")))
