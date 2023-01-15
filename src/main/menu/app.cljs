@@ -107,15 +107,6 @@
                :rx 25 :fill "#B0AFAB90"}]
     [:image {:href "img\\happy-hemp-trans.svg"
              :width 500 :x x}]])
-
-(defn text-node [s]
-  [:text
-   {:x         0
-    :y           280
-    :font-family "Pacifico"
-    :fill        "green"
-    :font-size   192}
-   s])
  
 (defn svg-width [id]
   (.-width (.getBBox (.getElementById js/document id))))
@@ -125,6 +116,30 @@
 
 (def label-width (r/atom 1000))
 (def label-height (r/atom 100))
+
+(defn label [s]
+  [:g
+   [:rect {:x      (- (/ 3840 2) (/ @label-width 2))
+           :y      40
+           :width  @label-width
+           :height (- @label-height 50)
+           :rx     25
+           :fill   "#c9d3dd90"}]
+   [:text#label
+    {:x           (- (/ 3840 2) (/ @label-width 2))
+     :y           230
+     :font-weight 1000
+     :font-family "Pacifico"
+     :fill        "white"
+     :font-size   192}
+    s]
+   [:text
+    {:x           (- (/ 3840 2) (/ @label-width 2))
+     :y           230
+     :font-family "Pacifico"
+     :fill        "green"
+     :font-size   192}
+    s]])
 
  (defn app []
    [:div#app
@@ -139,24 +154,12 @@
     [:svg#bg {:width    "100%"
               :view-box "0 0 3840 2160"
               :on-load (fn [_] 
-                         (reset! label-width (svg-width "cbdtinturesgreen"))
-                         (reset! label-height (svg-height "cbdtinturesgreen")))}
+                         (reset! label-width (svg-width "label"))
+                         (reset! label-height (svg-height "label")))}
      [:image {:href "img\\tinctures\\bg-tinctures.png"}]
      [logo 0]
      [logo 3300]
-      [:rect {:x      (- (/ 3840 2) (/ @label-width 2)) 
-              :y      40 
-              :width  @label-width
-              :height @label-height
-              :rx     25
-              :fill   "#c9d3dd90"}]
-          [:text#cbdtinturesgreen
-           {:x           (- (/ 3840 2) (/ @label-width 2))
-            :y           280
-            :font-family "Pacifico"
-            :fill        "green"
-            :font-size   192}
-           "CBD Tinctures"]
+     [label "CBD Topicals"]
       ]])
 
 (defn render []
