@@ -101,18 +101,30 @@
     [(.-width img)
      (.-height img)]))
 
- (defn svg-width [el]
-   (.-width (.getBBox (.getElementById js/document el))))
-
- (defn svg-height [el]
-   (.-height (.getBBox (.getElementById js/document el))))
-
 (defn logo [x]
    [:g [:rect {:x x :y 40
                :width 500 :height 500
-               :rx 25 :fill "#c9d3dd90"}]
+               :rx 25 :fill "#B0AFAB90"}]
     [:image {:href "img\\happy-hemp-trans.svg"
              :width 500 :x x}]])
+
+(defn text-node [s]
+  [:text
+   {:x         0
+    :y           280
+    :font-family "Pacifico"
+    :fill        "green"
+    :font-size   192}
+   s])
+ 
+(defn svg-width [id]
+  (.-width (.getBBox (.getElementById js/document id))))
+
+(defn svg-height [id]
+  (.-height (.getBBox (.getElementById js/document id))))
+
+(def label-width (r/atom 1000))
+(def label-height (r/atom 100))
 
  (defn app []
    [:div#app
@@ -120,29 +132,33 @@
     [import-bg]
     [import-images]
     [images @!files]
-    [(fn []
-        [:textarea {:rows      10
-                    :cols      48
-                    :value     (str (into [] (map dimensions @!files)))}])]
-    [:svg {:width    "100%"
-           :view-box "0 0 3840 2160"}
+    [:textarea {:rows  10
+                :cols  48
+                :value (str (into [] (map dimensions @!files)))
+                :read-only true}]
+    [:svg#bg {:width    "100%"
+              :view-box "0 0 3840 2160"
+              :on-load (fn [_] 
+                         (reset! label-width (svg-width "cbdtinturesgreen"))
+                         (reset! label-height (svg-height "cbdtinturesgreen")))}
      [:image {:href "img\\tinctures\\bg-tinctures.png"}]
      [logo 0]
      [logo 3300]
-     [:rect {:x      (- (/ 3840 2) (/ (svg-width "cbdtinturesgreen") 2)) 
-             :y      40 
-             :width  (svg-width "cbdtinturesgreen") 
-             :height (svg-height "cbdtinturesgreen") 
-             :rx     25
-             :fill   "#c9d3dd90"}]
-     [:text#cbdtinturesgreen 
-      {:x           (- (/ 3840 2) (/ (svg-width "cbdtinturesgreen") 2))
-       :y           280
-       :font-family "Pacifico"
-       :fill        "green"
-       :font-size   192}
-      "CBD Tinctures"]]])
- 
+      [:rect {:x      (- (/ 3840 2) (/ @label-width 2)) 
+              :y      40 
+              :width  @label-width
+              :height @label-height
+              :rx     25
+              :fill   "#c9d3dd90"}]
+          [:text#cbdtinturesgreen
+           {:x           (- (/ 3840 2) (/ @label-width 2))
+            :y           280
+            :font-family "Pacifico"
+            :fill        "green"
+            :font-size   192}
+           "CBD Tinctures"]
+      ]])
+
 (defn render []
   (rdom/render [app]
             (.getElementById js/document "root")))

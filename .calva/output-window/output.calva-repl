@@ -140,3 +140,269 @@ cljs꞉menu.app꞉> 
 cljs꞉menu.app꞉> 
 1264.3604736328125
 cljs꞉menu.app꞉> 
+nil
+; ------ WARNING - :undeclared-ns ------------------------------------------------
+;  Resource: <eval>:1:2
+;  No such namespace: str, could not locate str.cljs, str.cljc, or JavaScript source providing "str"
+; --------------------------------------------------------------------------------
+; 
+; 
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:1:2
+;  Use of undeclared Var str/replace
+; --------------------------------------------------------------------------------
+; 
+cljs꞉menu.app꞉> 
+"CBDTinctures"
+cljs꞉menu.app꞉> 
+:repl/exception!
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+; Cannot read properties of null (reading 'getBBox')
+cljs꞉menu.app꞉> 
+:repl/exception!
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+; Cannot read properties of null (reading 'getBBox')
+cljs꞉menu.app꞉> 
+:repl/exception!
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+; Cannot read properties of null (reading 'height')
+cljs꞉menu.app꞉> 
+nil
+cljs꞉menu.app꞉> 
+nil
+cljs꞉menu.app꞉> 
+#object[SVGElement [object SVGElement]]
+cljs꞉menu.app꞉> 
+:repl/exception!
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+; document.getElementById(...).getBBox is not a function
+cljs꞉menu.app꞉> 
+#object[SVGElement [object SVGElement]]
+cljs꞉menu.app꞉> 
+:repl/exception!
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+; document.getElementById(...).getBBox is not a function
+cljs꞉menu.app꞉> 
+:repl/exception!
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+; document.getElementById(...).getBBox is not a function
+cljs꞉menu.app꞉> 
+#object[HTMLUnknownElement [object HTMLUnknownElement]]
+cljs꞉menu.app꞉> 
+#'menu.app/text-node
+cljs꞉menu.app꞉> 
+#'menu.app/text-node
+cljs꞉menu.app꞉> 
+#object[Text [object Text]]
+cljs꞉menu.app꞉> 
+nil
+cljs꞉menu.app꞉> 
+:repl/exception!
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+; menu.app.text_node.call(...).getBBox is not a function
+cljs꞉menu.app꞉> 
+#'menu.app/text-node
+cljs꞉menu.app꞉> 
+[:text {:x 0, :y 280, :font-family "Pacifico", :fill "green", :font-size 192} "CBD Tinctures"]
+cljs꞉menu.app꞉> 
+#object[SVGSVGElement [object SVGSVGElement]]
+cljs꞉menu.app꞉> 
+#object[SVGSVGElement [object SVGSVGElement]]
+cljs꞉menu.app꞉> 
+#object[SVGSVGElement [object SVGSVGElement]]
+cljs꞉menu.app꞉> 
+#object[SVGRect [object SVGRect]]
+cljs꞉menu.app꞉> 
+0
+cljs꞉menu.app꞉> 
+0
+cljs꞉menu.app꞉> 
+0
+cljs꞉menu.app꞉> 
+#object[SVGElement [object SVGElement]]
+cljs꞉menu.app꞉> 
+0
+cljs꞉menu.app꞉> 
+96.6057357788086
+cljs꞉menu.app꞉> 
+#'menu.app/svg-width
+cljs꞉menu.app꞉> 
+17.090896606445312
+cljs꞉menu.app꞉> 
+109.49134826660156
+cljs꞉menu.app꞉> 
+[:rect {:x 1920, :y 40, :width 0, :height 0, :rx 25, :fill "#c9d3dd90"}]
+cljs꞉menu.app꞉> 
+[:rect {:x 1871.6971321105957, :y 40, :width 96.6057357788086, :height 0, :rx 25, :fill "#c9d3dd90"}]
+cljs꞉menu.app꞉> 
+0
+cljs꞉menu.app꞉> 
+[:rect {:x 1871.6971321105957, :y 40, :width 96.6057357788086, :height 18.18181800842285, :rx 25, :fill "#c9d3dd90"}]
+cljs꞉menu.app꞉> 
+96.6057357788086
+cljs꞉menu.app꞉> 
+#'menu.app/svg-width
+cljs꞉menu.app꞉> 
+nil
+; ------ REPL Error while processing ---------------------------------------------
+; (defn svg-width [s]
+;    (let [svg (.createElementNS js/document "http://www.w3.org/2000/svg" "svg")
+;          text (.createElementNS js/document "http://www.w3.org/2000/svg" "text")
+;          el (.getElementById js/document "app")]
+;      (set! (.-view-box svg) "0 0 3840" 2160)
+;      (set! (.-textContent text) s)
+;      (set! (.-font-size text) 192)
+;      (.appendChild svg text)
+;      (.appendChild el svg)
+;      (.-width (.getBBox svg))))
+; null
+; invalid dot form
+; {:form (. (.-view-box svg) "0 0 3840")}
+; ExceptionInfo: invalid dot form
+; 	shadow.build.cljs-hacks/shadow-analyze-dot (cljs_hacks.cljc:557)
+; 	shadow.build.cljs-hacks/shadow-analyze-dot (cljs_hacks.cljc:493)
+; 	shadow.build.cljs-hacks/install-hacks!/fn--10347 (cljs_hacks.cljc:1155)
+; 	clojure.lang.MultiFn.invoke (MultiFn.java:252)
+; 	cljs.analyzer/analyze-seq* (analyzer.cljc:4080)
+; 	cljs.analyzer/analyze-seq* (analyzer.cljc:4078)
+; 	cljs.analyzer/analyze-seq*-wrap (analyzer.cljc:4085)
+; 	cljs.analyzer/analyze-seq*-wrap (analyzer.cljc:4083)
+; 	cljs.analyzer/analyze-seq (analyzer.cljc:4109)
+; 	cljs.analyzer/analyze-seq (analyzer.cljc:4087)
+; 	cljs.analyzer/analyze-seq (analyzer.cljc:4089)
+; 	cljs.analyzer/analyze-seq (analyzer.cljc:4087)
+; 	cljs.analyzer/fn--3070 (analyzer.cljc:2643)
+; 	cljs.analyzer/fn--3070 (analyzer.cljc:2600)
+; 	clojure.lang.MultiFn.invoke (MultiFn.java:252)
+; 	cljs.analyzer/analyze-seq* (analyzer.cljc:4080)
+; 	cljs.analyzer/analyze-seq* (analyzer.cljc:4078)
+; 	cljs.analyzer/analyze-seq*-wrap (analyzer.cljc:4085)
+; 	cljs.analyzer/analyze-seq*-wrap (analyzer.cljc:4083)
+; 	cljs.analyzer/analyze-seq (analyzer.cljc:4109)
+; 	cljs.analyzer/analyze-seq (analyzer.cljc:4087)
+; 	cljs.analyzer/analyze-form (analyzer.cljc:4296)
+; 	cljs.analyzer/analyze-form (analyzer.cljc:4293)
+; 	cljs.analyzer/analyze* (analyzer.cljc:4349)
+; 	cljs.analyzer/analyze* (analyzer.cljc:4341)
+; 	cljs.analyzer/analyze (analyzer.cljc:4369)
+; 	cljs.analyzer/analyze (analyzer.cljc:4352)
+; 	cljs.analyzer/analyze (analyzer.cljc:4362)
+; 	cljs.analyzer/analyze (analyzer.cljc:4352)
+; 	cljs.analyzer/analyze (analyzer.cljc:4360)
+; 	cljs.analyzer/analyze (analyzer.cljc:4352)
+; 	cljs.analyzer/analyze-do-statements*/fn--2974 (analyzer.cljc:2349)
+; 	clojure.core/mapv/fn--8535 (core.clj:6979)
+; 	clojure.lang.ArrayChunk.reduce (ArrayChunk.java:58)
+; 	clojure.core.protocols/fn--8244 (protocols.clj:136)
+; 	clojure.core.protocols/fn--8244 (protocols.clj:124)
+; 	clojure.core.protocols/fn--8204/G--8199--8213 (protocols.clj:19)
+; 	clojure.core.protocols/seq-reduce (protocols.clj:31)
+; 	clojure.core.protocols/fn--8234 (protocols.clj:75)
+; 	clojure.core.protocols/fn--8234 (protocols.clj:75)
+; 	clojure.core.protocols/fn--8178/G--8173--8191 (protocols.clj:13)
+; 	clojure.core/reduce (core.clj:6886)
+; 	clojure.core/mapv (core.clj:6970)
+; 	clojure.core/mapv (core.clj:6970)
+; 	cljs.analyzer/analyze-do-statements* (analyzer.cljc:2349)
+; 	cljs.analyzer/analyze-do-statements* (analyzer.cljc:2348)
+; 	cljs.analyzer/analyze-do-statements (analyzer.cljc:2352)
+; 	cljs.analyzer/analyze-do-statements (analyzer.cljc:2351)
+; 	cljs.analyzer/fn--2979 (analyzer.cljc:2356)
+; 	cljs.analyzer/fn--2979 (analyzer.cljc:2354)
+; 	clojure.lang.MultiFn.invoke (MultiFn.java:252)
+; 	cljs.analyzer/analyze-seq* (analyzer.cljc:4080)
+; 	cljs.analyzer/analyze-seq* (analyzer.cljc:4078)
+; 	cljs.analyzer/analyze-seq*-wrap (analyzer.cljc:4085)
+; 	cljs.analyzer/analyze-seq*-wrap (analyzer.cljc:4083)
+; 	cljs.analyzer/analyze-seq (analyzer.cljc:4109)
+; 	cljs.analyzer/analyze-seq (analyzer.cljc:4087)
+; 	cljs.analyzer/analyze-form (analyzer.cljc:4296)
+; 	cljs.analyzer/analyze-form (analyzer.cljc:4293)
+; 	cljs.analyzer/analyze* (analyzer.cljc:4349)
+; 	cljs.analyzer/analyze* (analyzer.cljc:4341)
+; 	cljs.analyzer/analyze (analyzer.cljc:4369)
+; 	cljs.analyzer/analyze (analyzer.cljc:4352)
+; 	cljs.analyzer/analyze (analyzer.cljc:4362)
+; 	cljs.analyzer/analyze (analyzer.cljc:4352)
+; 	cljs.analyzer/analyze (analyzer.cljc:4360)
+; 	cljs.analyzer/analyze (analyzer.cljc:4352)
+; 	cljs.analyzer/analyze-let-body* (analyzer.cljc:2438)
+; 	cljs.analyzer/analyze-let-body* (analyzer.cljc:2437)
+; 	cljs.analyzer/analyze-let-body (analyzer.cljc:2443)
+; 	cljs.analyzer/analyze-let-body (analyzer.cljc:2440)
+; 	cljs.analyzer/analyze-let (analyzer.cljc:2479)
+; 	cljs.analyzer/analyze-let (analyzer.cljc:2445)
+; 	cljs.analyzer/fn--3022 (analyzer.cljc:2499)
+; 	cljs.analyzer/fn--3022 (analyzer.cljc:2497)
+; 	clojure.lang.MultiFn.invoke (MultiFn.java:252)
+; 	cljs.analyzer/analyze-seq* (analyzer.cljc:4080)
+; 	cljs.analyzer/analyze-seq* (analyzer.cljc:4078)
+; 	cljs.analyzer/analyze-seq*-wrap (analyzer.cljc:4085)
+; 	cljs.analyzer/analyze-seq*-wrap (analyzer.cljc:4083)
+; 
+cljs꞉menu.app꞉> 
+96.6057357788086
+cljs꞉menu.app꞉> 
+#'menu.app/svg-width
+cljs꞉menu.app꞉> 
+96.6057357788086
+cljs꞉menu.app꞉> 
+#'menu.app/svg-width
+cljs꞉menu.app꞉> 
+96.6057357788086
+cljs꞉menu.app꞉> 
+#'menu.app/svg-width
+cljs꞉menu.app꞉> 
+1157.6278076171875
+cljs꞉menu.app꞉> 
+#'menu.app/svg-width
+cljs꞉menu.app꞉> 
+1157.6278076171875
+cljs꞉menu.app꞉> 
+#'menu.app/svg-width
+cljs꞉menu.app꞉> 
+1157.6278076171875
+cljs꞉menu.app꞉> 
+#'menu.app/svg-width
+cljs꞉menu.app꞉> 
+1157.6319580078125
+cljs꞉menu.app꞉> 
+#'menu.app/svg-width
+cljs꞉menu.app꞉> 
+1157.6278076171875
+cljs꞉menu.app꞉> 
+#'menu.app/svg-width
+cljs꞉menu.app꞉> 
+#'menu.app/svg-width
+cljs꞉menu.app꞉> 
+1157.6319580078125
+cljs꞉menu.app꞉> 
+#'menu.app/svg-width
+cljs꞉menu.app꞉> 
+1157.6319580078125
+cljs꞉menu.app꞉> 
+#'menu.app/svg-width
+cljs꞉menu.app꞉> 
+1157.6278076171875
+cljs꞉menu.app꞉> 
+1000
+cljs꞉menu.app꞉> 
+#object[Function]
+cljs꞉menu.app꞉> 
+1500
+cljs꞉menu.app꞉> 
+1000
+cljs꞉menu.app꞉> 
+#'menu.app/svg-width
+cljs꞉menu.app꞉> 
+1268.653076171875
+cljs꞉menu.app꞉> 
+336
+cljs꞉menu.app꞉> 
