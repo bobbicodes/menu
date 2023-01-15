@@ -102,11 +102,13 @@
      (.-height img)]))
 
 (defn logo [x]
-   [:g [:rect {:x x :y 40
-               :width 500 :height 500
+   [:g [:rect {:x x :y 20
+               :width 530 :height 500
                :rx 25 :fill "#B0AFAB90"}]
-    [:image {:href "img\\happy-hemp-trans.svg"
-             :width 500 :x x}]])
+       [:image {:href "img\\happy-hemp-trans.svg"
+                :x (+ x 20)
+                :y 30
+                :width 500}]])
  
 (defn svg-width [id]
   (.-width (.getBBox (.getElementById js/document id))))
@@ -120,7 +122,7 @@
 (defn label [s]
   [:g
    [:rect {:x      (- (/ 3840 2) (/ @label-width 2))
-           :y      40
+           :y      (/ @label-height 10)
            :width  @label-width
            :height (- @label-height 50)
            :rx     25
@@ -159,7 +161,7 @@
      [:image {:href "img\\tinctures\\bg-tinctures.png"}]
      [logo 0]
      [logo 3300]
-     [label "CBD Topicals"]
+     [label "CBD Tinctures"]
       ]])
 
 (defn render []
