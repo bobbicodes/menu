@@ -102,7 +102,8 @@
      (.-height img)]))
 
 (defn logo [x]
-   [:g [:rect {:x x :y 20
+   [:g 
+    #_[:rect {:x x :y 20
                :width 530 :height 500
                :rx 25 :fill "#B0AFAB90"}]
        [:image {:href "img\\happy-hemp-trans.svg"
@@ -119,6 +120,8 @@
 (def label-width (r/atom 1000))
 (def label-height (r/atom 100))
 
+(def label-str (r/atom "CBD Flower"))
+
 (defn label [s]
   [:g
    [:rect {:x      (- (/ 3840 2) (/ @label-width 2))
@@ -129,27 +132,27 @@
            :fill   "#c9d3dd90"}]
    [:text#label
     {:x           (- (/ 3840 2) (/ @label-width 2))
-     :y           180
+     :y           (* @label-height 0.75)
      :font-weight 1000
      :font-family "Brush Script MT"
      :fill        "white"
-     :font-size   192}
+     :font-size   256}
     s]
    [:text
     {:x           (- (/ 3840 2) (/ @label-width 2))
-     :y           180
+     :y           (* @label-height 0.75)
      :font-family "Brush Script MT"
      :fill        "green"
-     :font-size   192}
+     :font-size   256}
     s]])
 
  (defn app []
    [:div#app
     {:style {:background-image (str "url(" @!bg ")")}}
-    [import-bg]
-    [import-images]
-    [images @!files]
-    [:textarea {:rows  10
+    ;[import-bg]
+    ;[import-images]
+    ;[images @!files]
+    #_[:textarea {:rows  10
                 :cols  48
                 :value (str (into [] (map dimensions @!files)))
                 :read-only true}]
@@ -159,10 +162,10 @@
               :on-load (fn [_] 
                          (reset! label-width (svg-width "label"))
                          (reset! label-height (svg-height "label")))}
-     [:image {:href "img\\tinctures\\bg-tinctures.png"}]
+     [:image {:href "img\\flower\\bg-flower.png"}]
      [logo 0]
      [logo 3300]
-     [label "CBD Tinctures"]]
+     [label @label-str]]
     ;[:div#png-container]
     ])
 
@@ -170,30 +173,103 @@
   (let [serializer (js/XMLSerializer.)]
     (.serializeToString serializer (.getElementById js/document el))))
 
-(let [canvas   (.getElementById js/document "canvas")
-      ctx      (.getContext canvas "2d")
-      svg      (js/Blob. [(svg-string "svg-bg")] (clj->js {:type "image/svg+xml;charset=utf-8"}))
-      url      (js/URL.createObjectURL svg)
-      img      (js/Image.)
-      bg-img   (js/Image.)
-      logo-src "img\\happy-hemp-trans.svg"
-      logo-img (js/Image.)
-      bg-src   "img\\tinctures\\bg-tinctures.png"
-      _        (set! (.-globalCompositeOperation ctx) "overlay")
-      _        (set! (.-src bg-img) bg-src)
-      _        (set! (.-onload bg-img)  
-                     #(do (.drawImage ctx bg-img 0 0)))
-      _        (set! (.-src img) url)
-      _        (set! (.-onload img)
-                     #(do (.drawImage ctx img 0 0)
-                          (let [png       (.toDataURL canvas "image/png")
-                                container (.getElementById js/document "png-container")]
-                            (set! (.-innerHTML container) (str "<img src=\"" png "\"/>")))))
-      _        (set! (.-src logo-img) logo-src)
-      _        (set! (.-onload logo-img)
-                     #(do (.drawImage ctx logo-img 0 0 500 500)
-                          (.drawImage ctx logo-img 3300 0 500 500)))]
-  url)
+(defn draw [url composite]
+  (let [canvas (.getElementById js/document "canvas")
+        ctx    (.getContext canvas "2d")
+        img    (js/Image.)
+        _      (set! (.-src img) url)
+        _      (set! (.-onload img)
+                     #(do (set! (.-globalCompositeOperation ctx) composite)
+                          (.drawImage ctx img 0 0)))]))
+
+(defn render-canvas [bg composite]
+  (let [canvas   (.getElementById js/document "canvas")
+        ctx      (.getContext canvas "2d")
+        svg      (js/Blob. [(svg-string "svg-bg")] (clj->js {:type "image/svg+xml;charset=utf-8"}))
+        url      (js/URL.createObjectURL svg)
+        img      (js/Image.)
+        logo-src "img\\happy-hemp-trans.svg"
+        logo-img (js/Image.)
+        _ (.clearRect ctx 0 0 3840 2160)
+        _ (draw "img\\flower\\bg-flower.png" "source-over")
+        _        (set! (.-src img) url)
+        _        (set! (.-onload img)
+                       #(do (set! (.-globalCompositeOperation ctx) "source-over") 
+                          (.drawImage ctx img 0 0)
+                            (let [png       (.toDataURL canvas "image/png")
+                                  container (.getElementById js/document "png-container")]
+                              (set! (.-innerHTML container) (str "<img src=\"" png "\"/>")))))
+
+        _        (set! (.-src logo-img) logo-src)
+        _        (set! (.-onload logo-img)
+                       #(do (set! (.-globalCompositeOperation ctx) composite)
+                            (.drawImage ctx logo-img 0 0 500 500)
+                            (.drawImage ctx logo-img 3300 0 500 500)
+                            (.drawImage ctx logo-img 0 1650 500 500)
+                            (.drawImage ctx logo-img 3300 1650 500 500)))]
+    url))
+
+(comment  
+  (reset! label-str "CBD Flower")
+  (render-canvas "img\\bg.jpg")
+  (render-canvas "img\\flower\\bg-flower.png" "hard-light")
+  (render-canvas "img\\flower\\bg-flower.png" "difference")
+  (render-canvas "img\\tinctures\\bg-tinctures.png")
+  )
+
+(defn tinctures []
+  (let [canvas   (.getElementById js/document "canvas")
+        ctx      (.getContext canvas "2d")
+        svg      (js/Blob. [(svg-string "svg-bg")] (clj->js {:type "image/svg+xml;charset=utf-8"}))
+        url      (js/URL.createObjectURL svg)
+        img      (js/Image.)
+        bg-img   (js/Image.)
+        logo-src "img\\happy-hemp-trans.svg"
+        logo-img (js/Image.)
+        bg-src   "img\\tinctures\\bg-tinctures.png"
+        _        (set! (.-globalCompositeOperation ctx) "overlay")
+        _        (set! (.-src bg-img) bg-src)
+        _        (set! (.-onload bg-img)  
+                       #(do (.drawImage ctx bg-img 0 0)))
+        _        (set! (.-src img) url)
+        _        (set! (.-onload img)
+                       #(do (.drawImage ctx img 0 0)
+                            (let [png       (.toDataURL canvas "image/png")
+                                  container (.getElementById js/document "png-container")]
+                              (set! (.-innerHTML container) (str "<img src=\"" png "\"/>")))))
+        _        (set! (.-src logo-img) logo-src)
+        _        (set! (.-onload logo-img)
+                       #(do (.drawImage ctx logo-img 0 0 500 500)
+                            (.drawImage ctx logo-img 3300 0 500 500)))]
+    url))
+
+  
+  (defn topicals []
+    (let [canvas   (.getElementById js/document "canvas")
+          ctx      (.getContext canvas "2d")
+          svg      (js/Blob. [(svg-string "svg-bg")] (clj->js {:type "image/svg+xml;charset=utf-8"}))
+          url      (js/URL.createObjectURL svg)
+          img      (js/Image.)
+          bg-img   (js/Image.)
+          logo-src "img\\happy-hemp-trans.svg"
+          logo-img (js/Image.)
+          bg-src   "img\\topicals\\bg-topicals.png"
+          _ (.clearRect ctx 0 0 3840 2160)
+          _        (set! (.-globalCompositeOperation ctx) "multiply")
+          _        (set! (.-src bg-img) bg-src)
+          _        (set! (.-onload bg-img)
+                         #(do (.drawImage ctx bg-img 0 0)))
+          _        (set! (.-src img) url)
+          _        (set! (.-onload img)
+                         #(do (.drawImage ctx img 0 0)
+                              (let [png       (.toDataURL canvas "image/png")
+                                    container (.getElementById js/document "png-container")]
+                                (set! (.-innerHTML container) (str "<img src=\"" png "\"/>")))))
+          _        (set! (.-src logo-img) logo-src)
+          _        (set! (.-onload logo-img)
+                         #(do (.drawImage ctx logo-img 850 0 500 500)
+                              (.drawImage ctx logo-img 2600 0 500 500)))]
+      url))
 
 (defn download-blob [file-name blob]
   (let [object-url (js/URL.createObjectURL blob)
