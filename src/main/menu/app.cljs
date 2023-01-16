@@ -102,17 +102,16 @@
 
 (defn render-canvas [bg composite]
   (let [canvas   (.getElementById js/document "canvas")
-        ctx      (.getContext canvas "2d")
-        svg      (js/Blob. [(svg-string "svg-bg")] (clj->js {:type "image/svg+xml;charset=utf-8"}))
-        url      (js/URL.createObjectURL svg)]
+        ctx      (.getContext canvas "2d")]
     (.clearRect ctx 0 0 3840 2160)
     (draw bg "source-over")
     (draw-logo "img\\happy-hemp-trans.svg" composite)
-    (draw-svg "svg-bg")
-    url))
+    ;(draw-svg "svg-bg")
+    ))
 
 (comment
   (reset! label-str "CBD Tinctures")
+  (reset! label-str "CBD Flower")
   (reset! !bg "img\\flower\\bg-flower.png")
   (reset! !bg "img\\tinctures\\bg-tinctures.png")
   (reset! !bg "img\\topicals\\bg-topicals.png")
