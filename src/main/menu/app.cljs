@@ -84,44 +84,43 @@
                  :on-load (fn [_]
                             (reset! label-width (svg-width "label"))
                             (reset! label-height (svg-height "label")))}
-    [:image {:href "img\\flower\\bg-flower.png"}]
+    [:image {:href @!bg}]
     [logo 0]
     [logo 3300]
     [label @label-str]]])
+
+(defn draw-svg [id]
+  (let [canvas   (.getElementById js/document "canvas")
+        ctx      (.getContext canvas "2d")
+        img      (js/Image.)
+        svg      (js/Blob. [(svg-string "svg-bg")] (clj->js {:type "image/svg+xml;charset=utf-8"}))
+        url      (js/URL.createObjectURL svg)]
+    (set! (.-src img) url)
+    (set! (.-onload img)
+            #(do (set! (.-globalCompositeOperation ctx) "source-over")
+                 (.drawImage ctx img 0 0)))))
 
 (defn render-canvas [bg composite]
   (let [canvas   (.getElementById js/document "canvas")
         ctx      (.getContext canvas "2d")
         svg      (js/Blob. [(svg-string "svg-bg")] (clj->js {:type "image/svg+xml;charset=utf-8"}))
-        url      (js/URL.createObjectURL svg)
-        img      (js/Image.)
-        _ (.clearRect ctx 0 0 3840 2160)
-        _ (draw bg "source-over")
-        _ (draw-logo "img\\happy-hemp-trans.svg" composite)
-        _        (set! (.-src img) url)
-        _        (set! (.-onload img)
-                       #(do (set! (.-globalCompositeOperation ctx) "source-over")
-                            (.drawImage ctx img 0 0)))]
+        url      (js/URL.createObjectURL svg)]
+    (.clearRect ctx 0 0 3840 2160)
+    (draw bg "source-over")
+    (draw-logo "img\\happy-hemp-trans.svg" composite)
+    (draw-svg "svg-bg")
     url))
 
 (comment
   (reset! label-str "CBD Tinctures")
+  (reset! !bg "img\\flower\\bg-flower.png")
+  (reset! !bg "img\\tinctures\\bg-tinctures.png")
+  (reset! !bg "img\\topicals\\bg-topicals.png")
   (render-canvas "img\\bg.jpg" "source-over")
   (render-canvas "img\\flower\\bg-flower.png" "difference")
   (render-canvas "img\\flower\\bg-flower.png" "source-over")
   (render-canvas "img\\tinctures\\bg-tinctures.png" "source-over")
   (render-canvas "img\\topicals\\bg-topicals.png" "source-over"))
-
-(defn download-blob [file-name blob]
-  (let [object-url (js/URL.createObjectURL blob)
-        anchor-element
-        (doto (js/document.createElement "a")
-          (-> .-href (set! object-url))
-          (-> .-download (set! file-name)))]
-    (.appendChild (.-body js/document) anchor-element)
-    (.click anchor-element)
-    (.removeChild (.-body js/document) anchor-element)
-    (js/URL.revokeObjectURL object-url)))
 
 (defn render []
   (rdom/render [app]
