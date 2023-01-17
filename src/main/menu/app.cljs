@@ -3,23 +3,19 @@
             [reagent.core :as r]))
 
 (defn draw 
-  ([url] (draw url 0 0 "source-over"))
-  ([url composite]
-   (draw url 0 0 composite))
-  ([url x y composite]
-   (let [canvas (.getElementById js/document "canvas")
-         ctx    (.getContext canvas "2d")
-         img    (js/Image.)
+  ([ctx url] (draw ctx url 0 0 "source-over"))
+  ([ctx url composite]
+   (draw ctx url 0 0 composite))
+  ([ctx url x y composite]
+   (let [img    (js/Image.)
          _      (set! (.-src img) url)
          _      (set! (.-onload img)
                       #(do (set! (.-globalCompositeOperation ctx) composite)
                            (.drawImage ctx img x y)))]))
-  ([url x y width height]
-   (draw url x y width height "source-over")) 
-  ([url x y width height composite]
-    (let [canvas (.getElementById js/document "canvas")
-          ctx    (.getContext canvas "2d")
-          img    (js/Image.)
+  ([ctx url x y width height]
+   (draw ctx url x y width height "source-over")) 
+  ([ctx url x y width height composite]
+    (let [img    (js/Image.)
           _      (set! (.-src img) url)
           _      (set! (.-onload img)
                        #(do (set! (.-globalCompositeOperation ctx) composite)
@@ -70,8 +66,9 @@
         h  120
         w1 350
         w2 350]
-    (.clearRect ctx 0 0 3840 2160)
+    
     (roundedRect ctx x (+ y 1000) 1350 530 45 "#977F4760")
+    ;(draw ctx "img\\tinctures\\bg-tinctures.png")
     (label ctx x1 y1 w1 h "500mg" "green")
     (label ctx x2 y1 w2 h "1000mg" "green")
     (label ctx x3 y1 w2 h "1500mg" "green")
@@ -90,10 +87,27 @@
   []
   (.getTime (js/Date.)))
 
+#_(defn render-frame []
+  (let [canvas (.getElementById js/document "canvas")
+        ctx    (.getContext canvas "2d")
+        img    (js/Image.)
+        _  (.clearRect ctx 0 0 3840 2160)
+        _      (set! (.-src img) "img\\tinctures\\bg-tinctures.png")
+        _      (set! (.-onload img)
+                     #(do (set! (.-globalCompositeOperation ctx) "destination-over")
+                          (.drawImage ctx img 0 0)))]
+   
+    (render-prices (.getContext (.getElementById js/document "canvas") "2d")
+                   (- (mod (millis) (+ 1400 3840)) 1400) 0)
+    (.requestAnimationFrame js/window render-frame)))
+
 (defn render-frame []
-  (render-prices (.getContext (.getElementById js/document "canvas") "2d")
-                 (- (mod (millis) (+ 1400 3840)) 1400) 0)
-  (.requestAnimationFrame js/window render-frame))
+  (let [canvas (.getElementById js/document "canvas")
+        ctx    (.getContext canvas "2d")]
+    (draw ctx "img\\tinctures\\bg-tinctures.png")
+    (render-prices (.getContext (.getElementById js/document "canvas") "2d")
+                   (- (mod (millis) (+ 1400 3840)) 1400) 0)
+    (.requestAnimationFrame js/window render-frame)))
 
 (render-frame)
 
@@ -102,7 +116,7 @@
         ctx    (.getContext canvas "2d")
         width  (* 100 (count label))]
     (.clearRect ctx 0 0 3840 2160)
-   ;  (draw bg)
+    ; (draw ctx bg)
     #_(roundedRect ctx (- (/ 3840 2) (/ width 1.9)) 50 
                      (* 1.05 width) 240
                      25 "#977F4760")
