@@ -138,17 +138,6 @@
   ;(draw ctx "img\\tinctures\\bg-tinctures.png")
     ))
 
-(defn balm []
-  (let [x 500
-        canvas (.getElementById js/document "canvas")
-        ctx    (.getContext canvas "2d")]
-    (.clearRect ctx 0 0 3840 2160)
-    (roundedRect ctx (+ x 450) 270 1100 1070 45 "#977F47c0")
-    (draw ctx "img\\topicals\\HHF-Balms-ES-transformed.png"
-          (+ x 400) 200 1200 1200)
-    (label ctx 1030 150 900 120 "No Mess CBD Balm" "black")
-    (label ctx (+ x 900) 1350 200 110 "$30" "black")))
-
 (defn gradient [ctx x y width height color1 color2 x1 y1 x2 y2]
   (let [right (.createLinearGradient ctx x1 y1 x2 y2)]
     (.addColorStop right 0 color1)
@@ -156,21 +145,55 @@
     (aset ctx "fillStyle" right)
     (.fillRect ctx x y width height)))
 
-(let [canvas (.getElementById js/document "canvas")
+(defn balm []
+  (let [canvas (.getElementById js/document "canvas")
+        ctx    (.getContext canvas "2d")]
+    (.clearRect ctx 0 0 3840 2160)
+    (gradient ctx 900 400 500 800 "#B4B4B2" "#B4B4B200" 1000 300 900 300)
+    (gradient ctx 1400 400 500 800 "#B4B4B2" "#B4B4B200" 1800 300 1900 300)
+    (gradient ctx 1000 300 800 100 "#B4B4B2" "#B4B4B200" 900 400 900 300)
+    (gradient ctx 1000 1200 800 100 "#B4B4B2" "#B4B4B200" 900 1200 900 1300)
+    (gradient ctx 900 300 100 100 "#B4B4B2" "#B4B4B200" 1000 400 950 350)     ;; top left
+    (gradient ctx 900 1200 100 100 "#B4B4B2" "#B4B4B200" 1000 1200 950 1250)  ;; bottom left
+    (gradient ctx 1800 300 100 100 "#B4B4B2" "#B4B4B200" 1800 400 1850 350)    ;; top right
+    (gradient ctx 1800 1200 100 100 "#B4B4B2" "#B4B4B200" 1800 1200 1850 1250) ;; bottom right
+    (draw ctx "img\\topicals\\HHF-Balms-ES-transformed.png"
+          800 190 1200 1200)
+    (label ctx 950 150 900 120 "No Mess CBD Balm" "black")
+    (label ctx 1300 1350 200 110 "$30" "black")
+;(draw ctx "img\\topicals\\bg-topicals.png")
+    ))
+
+(defn bg-grad [ctx x y w h]
+  (gradient ctx (+ x 100) (+ y 100) (/ w 2) (- h 200) "#B4B4B2" "#B4B4B200" 
+                (+ x 200) (- y 100) (+ x 100) (- y 100))
+  (gradient ctx (+ x (/ w 2)) (+ y 100) (/ w 2) (- h 200) "#B4B4B2" "#B4B4B200" 
+                (+ (/ w 2) x 400) (- y 100) (+ x (- w 100)) (- y 100))
+  (gradient ctx (+ x 200) y (- w 400) 100 "#B4B4B2" "#B4B4B200" 
+                (+ x 100) (+ y 100) (+ x 100) y)
+  (gradient ctx (+ x 200) (+ (- h 100) y) x 100 "#B4B4B2" "#B4B4B200" 
+                (+ x 100) (+ (- h 100) y) (+ x 100) (+ (- h 100) 500))
+  (gradient ctx (+ x 100) y 100 100 "#B4B4B2" "#B4B4B200" 
+                (+ x 200) (+ y 100) (+ x 150) (+ y 50))     ;; top left
+  (gradient ctx (+ x 100) (+ (- h 100) y) 100 100 "#B4B4B2" "#B4B4B200" 
+                (+ x 200) (+ (- h 100) y) (+ x 150) (+ (- h 50) y))  ;; bottom left
+  (gradient ctx (+ x (- w 200)) y 100 100 "#B4B4B2" "#B4B4B200" 
+                (+ x (- w 200)) (+ y 100) (+ x (- w 150)) (+ y 50))    ;; top right
+  (gradient ctx (+ x (- w 200)) (+ (- h 100) y) 100 100 "#B4B4B2" "#B4B4B200" 
+                (+ x (- w 200)) (+ (- h 100) y) (+ x (- w 150)) (+ (- h 100) y 50))) ;; bottom right
+  
+
+(let [x 800 y 400 w 1200 h 800
+      canvas (.getElementById js/document "canvas")
       ctx    (.getContext canvas "2d")]
   (.clearRect ctx 0 0 3840 2160)
-  (gradient ctx 900 400 500 800 "#977F47" "#977F4760" 1000 300 900 300)
-  (gradient ctx 1400 400 500 800 "#977F47" "#977F4760" 1800 300 1900 300)
-  (gradient ctx 1000 300 800 100 "#977F47" "#977F4760" 900 400 900 300)
-  (gradient ctx 1000 1200 800 100 "#977F47" "#977F4760" 900 1200 900 1300)
-  (gradient ctx 900 300 100 100 "#977F47" "#977F4760" 1000 400 950 350)     ;; top left
-  (gradient ctx 900 1200 100 100 "#977F47" "#977F4760" 1000 1200 950 1250)  ;; bottom left
-  (gradient ctx 1800 300 100 100 "#977F47" "#977F4760" 1800 400 1850 350)    ;; top right
-  (gradient ctx 1800 1200 100 100 "#977F47" "#977F4760" 1800 1200 1850 1250) ;; bottom right
-  (draw ctx "img\\topicals\\HHF-Balms-ES-transformed.png"
-        800 190 1200 1200)
-  (label ctx 950 150 900 120 "No Mess CBD Balm" "black")
-  (label ctx 1300 1350 200 110 "$30" "black"))
+  (bg-grad ctx x y w h)
+  ;(roundedRect ctx x y w h 45 "#977F47c0")
+  (draw ctx "img\\topicals\\body-oil-3-transformed.png" x y w h)
+  (label ctx (+ x 150) 150 900 120 "No Mess CBD Balm" "black")
+  (label ctx (+ x 450) (+ y h 100) 200 110 "$30" "black")
+  ;(draw ctx "img\\topicals\\bg-topicals.png")
+)
 
 (defn app []
   [:div#app
