@@ -139,20 +139,26 @@
   ;(draw ctx "img\\tinctures\\bg-tinctures.png")
     ))
 
+(defn balm []
+  (let [x 500
+        canvas (.getElementById js/document "canvas")
+        ctx    (.getContext canvas "2d")]
+    (.clearRect ctx 0 0 3840 2160)
+    (roundedRect ctx (+ x 450) 270 1100 1070 45 "#977F47c0")
+    (draw ctx "img\\topicals\\HHF-Balms-ES-transformed.png"
+          (+ x 400) 200 1200 1200)
+    (label ctx 1030 150 900 120 "No Mess CBD Balm" "black")
+    (label ctx (+ x 900) 1350 200 110 "$30" "black")))
+
 (let [x 500
       canvas (.getElementById js/document "canvas")
       ctx    (.getContext canvas "2d")]
   (.clearRect ctx 0 0 3840 2160)
-  (roundedRect ctx (+ x 450) 270 1070 700 45 "#977F47c0")
-  (draw ctx "img\\topicals\\IMG_7520-removebg-preview-1-2-transformed.png" 
-        (+ x 400) 200 1200 800)
-  (label ctx 920 150 1150 120 "Extra Strength CBD Lotion" "black")
-  ;(draw ctx "img\\tinctures\\oil.jpg" (+ x 500) 200 1000 1150)
-  ;(render-prices ctx 870 300)
-  ;(label ctx (+ x 900) 990 200 110 "$40" "black")
-  (cbd-lotion-prices ctx (+ x 360) -30)
-  ;(draw ctx "img\\tinctures\\refills-trans.png" (+ x 500) 200 1000 1150)
-  ;(draw ctx "img\\tinctures\\bg-tinctures.png")
+  (roundedRect ctx (+ x 450) 270 1100 1070 45 "#977F47c0")
+  (draw ctx "img\\topicals\\HHF-Balms-ES-transformed.png" 
+        (+ x 400) 200 1200 1200)
+  (label ctx 1030 150 900 120 "No Mess CBD Balm" "black")
+  (label ctx (+ x 900) 1350 200 110 "$30" "black")
   )
 
 (defn app []
