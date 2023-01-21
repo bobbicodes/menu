@@ -1,6 +1,6 @@
 # Happy Hemp Farmacy
 
-![animated slide](happyhemp-tinctures-hd.gif)
+![animated slide](happyhemp-hd.gif)
 
 ## Development
 
