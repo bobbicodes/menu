@@ -93,6 +93,18 @@
     (label ctx x2 y4 w1 h " $40" "black")
     (label ctx x3 y4 w1 h " $65" "black")))
 
+(defn cbd-lotion-prices [ctx x y]
+  (let [x1 x y1 (+ y 1000)
+        x2 (+ x 480) y2 (+ y 1285)
+        x3 (+ x 1000) y3 (+ y 1130)
+        y4 (+ y 1410)
+        h  120 w1 350 w2 350]
+    (roundedRect ctx 1300 (+ y 1000) 450 530 45 "#95866Fe0")
+    (label ctx x2 y1 w2 h "100mL" "green")
+    (label ctx x2 y2 w2 h "50mL" "green")
+    (label ctx x2 y3 w1 h " $30" "black")
+    (label ctx x2 y4 w1 h " $15" "black")))
+
 (defn millis
   "Get the current time in milliseconds."
   []
@@ -110,17 +122,35 @@
     (draw ctx "img\\tinctures\\Broad-Spectrum-CBD-Oil-1000mg-1200x1200-removebg-preview.png")
     ))
 
+(defn lotion []
+  (let [x 500
+        canvas (.getElementById js/document "canvas")
+        ctx    (.getContext canvas "2d")]
+    (.clearRect ctx 0 0 3840 2160)
+    (roundedRect ctx (+ x 450) 270 1070 700 45 "#977F47c0")
+    (draw ctx "img\\topicals\\IMG_7520-removebg-preview-1-2-transformed.png"
+          (+ x 400) 200 1200 800)
+    (label ctx 920 150 1150 120 "Extra Strength CBD Lotion" "black")
+  ;(draw ctx "img\\tinctures\\oil.jpg" (+ x 500) 200 1000 1150)
+  ;(render-prices ctx 870 300)
+  ;(label ctx (+ x 900) 990 200 110 "$40" "black")
+    (cbd-lotion-prices ctx (+ x 360) -30)
+  ;(draw ctx "img\\tinctures\\refills-trans.png" (+ x 500) 200 1000 1150)
+  ;(draw ctx "img\\tinctures\\bg-tinctures.png")
+    ))
+
 (let [x 500
       canvas (.getElementById js/document "canvas")
       ctx    (.getContext canvas "2d")]
   (.clearRect ctx 0 0 3840 2160)
-  (roundedRect ctx (+ x 600) 270 800 650 45 "#977F47c0")
-  (draw ctx "img\\topicals\\body-oil-3-transformed.png" (+ x 400) 200 1200 800)
-  (label ctx 1100 150 800 120 "CBD Massage Oil" "black")
+  (roundedRect ctx (+ x 450) 270 1070 700 45 "#977F47c0")
+  (draw ctx "img\\topicals\\IMG_7520-removebg-preview-1-2-transformed.png" 
+        (+ x 400) 200 1200 800)
+  (label ctx 920 150 1150 120 "Extra Strength CBD Lotion" "black")
   ;(draw ctx "img\\tinctures\\oil.jpg" (+ x 500) 200 1000 1150)
   ;(render-prices ctx 870 300)
-  (label ctx (+ x 900) 920 200 110 "$40" "black")
-  ;(cbd-oil-prices ctx (+ x 360) 300)
+  ;(label ctx (+ x 900) 990 200 110 "$40" "black")
+  (cbd-lotion-prices ctx (+ x 360) -30)
   ;(draw ctx "img\\tinctures\\refills-trans.png" (+ x 500) 200 1000 1150)
   ;(draw ctx "img\\tinctures\\bg-tinctures.png")
   )
