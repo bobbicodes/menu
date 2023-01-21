@@ -2,7 +2,7 @@
   (:require [reagent.dom :as rdom]
             [reagent.core :as r]))
 
-(defn draw 
+(defn draw
   ([ctx url] (draw ctx url 0 0 "source-over"))
   ([ctx url composite]
    (draw ctx url 0 0 composite))
@@ -13,13 +13,13 @@
                       #(do (set! (.-globalCompositeOperation ctx) composite)
                            (.drawImage ctx img x y)))]))
   ([ctx url x y width height]
-   (draw ctx url x y width height "source-over")) 
+   (draw ctx url x y width height "source-over"))
   ([ctx url x y width height composite]
-    (let [img    (js/Image.)
-          _      (set! (.-src img) url)
-          _      (set! (.-onload img)
-                       #(do (set! (.-globalCompositeOperation ctx) composite)
-                            (.drawImage ctx img x y width height)))])))
+   (let [img    (js/Image.)
+         _      (set! (.-src img) url)
+         _      (set! (.-onload img)
+                      #(do (set! (.-globalCompositeOperation ctx) composite)
+                           (.drawImage ctx img x y width height)))])))
 
 (defn draw-logo [ctx url]
   (let [img (js/Image.)
@@ -46,11 +46,11 @@
   (set! (.-font ctx) "114px Brush Script MT")
   (set! (.-shadowColor ctx) "white")
   (set! (.-shadowOffsetX ctx) 2)
-   (set! (.-shadowOffsetY ctx) 2)
+  (set! (.-shadowOffsetY ctx) 2)
   (set! (.-fillStyle ctx) color)
   (.fillText ctx text (+ x 30) (+ y 90))
   (set! (.-shadowOffsetX ctx) 0)
-(set! (.-shadowOffsetY ctx) 0)
+  (set! (.-shadowOffsetY ctx) 0)
   ctx)
 
 (defn render-prices [ctx x y]
@@ -115,12 +115,11 @@
         ctx    (.getContext canvas "2d")
         tick   (- (mod (millis) 10000) 1400)]
     #_(if (< tick 0)
-      (draw ctx "img\\flower\\bg-flower.png")
-      (draw ctx "img\\tinctures\\bg-tinctures.png"))
+        (draw ctx "img\\flower\\bg-flower.png")
+        (draw ctx "img\\tinctures\\bg-tinctures.png"))
     (draw-logo ctx "img\\happy-hemp-trans.svg")
     (render-prices ctx tick 0)
-    (draw ctx "img\\tinctures\\Broad-Spectrum-CBD-Oil-1000mg-1200x1200-removebg-preview.png")
-    ))
+    (draw ctx "img\\tinctures\\Broad-Spectrum-CBD-Oil-1000mg-1200x1200-removebg-preview.png")))
 
 (defn lotion []
   (let [x 500
@@ -150,16 +149,28 @@
     (label ctx 1030 150 900 120 "No Mess CBD Balm" "black")
     (label ctx (+ x 900) 1350 200 110 "$30" "black")))
 
-(let [x 500
-      canvas (.getElementById js/document "canvas")
+(defn gradient [ctx x y width height color1 color2 x1 y1 x2 y2]
+  (let [right (.createLinearGradient ctx x1 y1 x2 y2)]
+    (.addColorStop right 0 color1)
+    (.addColorStop right 1 color2)
+    (aset ctx "fillStyle" right)
+    (.fillRect ctx x y width height)))
+
+(let [canvas (.getElementById js/document "canvas")
       ctx    (.getContext canvas "2d")]
   (.clearRect ctx 0 0 3840 2160)
-  (roundedRect ctx (+ x 450) 270 1100 1070 45 "#977F47c0")
-  (draw ctx "img\\topicals\\HHF-Balms-ES-transformed.png" 
-        (+ x 400) 200 1200 1200)
-  (label ctx 1030 150 900 120 "No Mess CBD Balm" "black")
-  (label ctx (+ x 900) 1350 200 110 "$30" "black")
-  )
+  (gradient ctx 900 400 500 800 "#977F47" "#977F4760" 1000 300 900 300)
+  (gradient ctx 1400 400 500 800 "#977F47" "#977F4760" 1800 300 1900 300)
+  (gradient ctx 1000 300 800 100 "#977F47" "#977F4760" 900 400 900 300)
+  (gradient ctx 1000 1200 800 100 "#977F47" "#977F4760" 900 1200 900 1300)
+  (gradient ctx 900 300 100 100 "#977F47" "#977F4760" 1000 400 950 350)     ;; top left
+  (gradient ctx 900 1200 100 100 "#977F47" "#977F4760" 1000 1200 950 1250)  ;; bottom left
+  (gradient ctx 1800 300 100 100 "#977F47" "#977F4760" 1800 400 1850 350)    ;; top right
+  (gradient ctx 1800 1200 100 100 "#977F47" "#977F4760" 1800 1200 1850 1250) ;; bottom right
+  (draw ctx "img\\topicals\\HHF-Balms-ES-transformed.png"
+        800 190 1200 1200)
+  (label ctx 950 150 900 120 "No Mess CBD Balm" "black")
+  (label ctx 1300 1350 200 110 "$30" "black"))
 
 (defn app []
   [:div#app
