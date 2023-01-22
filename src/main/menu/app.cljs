@@ -43,7 +43,7 @@
 (defn label [ctx x y width height text color]
   ;(roundedRect ctx x y width height 45 "#977F4790")
   ;(roundedRect ctx x y 500 (* 1.5 height) 45 "#977F4750")
-  (set! (.-font ctx) "140px Brush Script MT")
+  (set! (.-font ctx) "128px Brush Script MT")
   (set! (.-shadowColor ctx) "white")
   (set! (.-shadowOffsetX ctx) 2)
   (set! (.-shadowOffsetY ctx) 2)
@@ -93,18 +93,6 @@
     (label ctx x2 y4 w1 h " $40" "black")
     (label ctx x3 y4 w1 h " $65" "black")))
 
-(defn cbd-lotion-prices [ctx x y]
-  (let [x1 x y1 (+ y 1000)
-        x2 (+ x 480) y2 (+ y 1285)
-        x3 (+ x 1000) y3 (+ y 1130)
-        y4 (+ y 1410)
-        h  120 w1 350 w2 350]
-    (roundedRect ctx 1300 (+ y 1000) 450 530 45 "#95866Fe0")
-    (label ctx x2 y1 w2 h "100mL" "green")
-    (label ctx x2 y2 w2 h "50mL" "green")
-    (label ctx x2 y3 w1 h " $30" "black")
-    (label ctx x2 y4 w1 h " $15" "black")))
-
 (defn millis
   "Get the current time in milliseconds."
   []
@@ -121,73 +109,12 @@
     (render-prices ctx tick 0)
     (draw ctx "img\\tinctures\\Broad-Spectrum-CBD-Oil-1000mg-1200x1200-removebg-preview.png")))
 
-(defn lotion []
-  (let [x 500
-        canvas (.getElementById js/document "canvas")
-        ctx    (.getContext canvas "2d")]
-    (.clearRect ctx 0 0 3840 2160)
-    (roundedRect ctx (+ x 450) 270 1070 700 45 "#977F47c0")
-    (draw ctx "img\\topicals\\IMG_7520-removebg-preview-1-2-transformed.png"
-          (+ x 400) 200 1200 800)
-    (label ctx 920 150 1150 120 "Extra Strength CBD Lotion" "black")
-  ;(draw ctx "img\\tinctures\\oil.jpg" (+ x 500) 200 1000 1150)
-  ;(render-prices ctx 870 300)
-  ;(label ctx (+ x 900) 990 200 110 "$40" "black")
-    (cbd-lotion-prices ctx (+ x 360) -30)
-  ;(draw ctx "img\\tinctures\\refills-trans.png" (+ x 500) 200 1000 1150)
-  ;(draw ctx "img\\tinctures\\bg-tinctures.png")
-    ))
-
 (defn gradient [ctx x y width height color1 color2 x1 y1 x2 y2]
   (let [right (.createLinearGradient ctx x1 y1 x2 y2)]
     (.addColorStop right 0 color1)
     (.addColorStop right 1 color2)
     (set! (.-fillStyle ctx) right)
     (.fillRect ctx x y width height)))
-
-(defn balm []
-  (let [canvas (.getElementById js/document "canvas")
-        ctx    (.getContext canvas "2d")]
-    (.clearRect ctx 0 0 3840 2160)
-    (gradient ctx 900 400 500 800 "#B4B4B2" "#B4B4B200" 1000 300 900 300)
-    (gradient ctx 1400 400 500 800 "#B4B4B2" "#B4B4B200" 1800 300 1900 300)
-    (gradient ctx 1000 300 800 100 "#B4B4B2" "#B4B4B200" 900 400 900 300)
-    (gradient ctx 1000 1200 800 100 "#B4B4B2" "#B4B4B200" 900 1200 900 1300)
-    (gradient ctx 900 300 100 100 "#B4B4B2" "#B4B4B200" 1000 400 950 350)     ;; top left
-    (gradient ctx 900 1200 100 100 "#B4B4B2" "#B4B4B200" 1000 1200 950 1250)  ;; bottom left
-    (gradient ctx 1800 300 100 100 "#B4B4B2" "#B4B4B200" 1800 400 1850 350)    ;; top right
-    (gradient ctx 1800 1200 100 100 "#B4B4B2" "#B4B4B200" 1800 1200 1850 1250) ;; bottom right
-    (draw ctx "img\\topicals\\HHF-Balms-ES-transformed.png"
-          800 190 1200 1200)
-    (label ctx 950 150 900 120 "No Mess CBD Balm" "black")
-    (label ctx 1300 1350 200 110 "$30" "black")
-;(draw ctx "img\\topicals\\bg-topicals.png")
-    ))
-
-(defn rad-grad [ctx x y width height color1 color2 x0 y0 r0 x1 y1 r1]
-  (let [grad (.createRadialGradient ctx x0 y0 r0 x1 y1 r1)]
-    (.addColorStop grad 0 color1)
-    (.addColorStop grad 0.5 color2)
-    (set! (.-fillStyle ctx) grad)
-    (.fillRect ctx x y width height)))
-
-#_(defn bg-grad [ctx x y w h]
-  #_(gradient ctx (+ x 100) (+ y 100) (/ w 2) (- h 200) "#B4B4B2" "#B4B4B200" 
-                (+ x 200) (- y 100) (+ x 100) (- y 100))
-  (gradient ctx (+ x (/ w 2)) (+ y 100) (/ w 2) (- h 200) "#B4B4B2" "#B4B4B200" 
-                (+ (/ w 2) x 400) (- y 100) (+ x (- w 100)) (- y 100))
-  #_(gradient ctx (+ x 200) y (- w 400) 100 "#B4B4B2" "#B4B4B200" 
-                (+ x 100) (+ y 100) (+ x 100) y)
-  #_(gradient ctx (+ x 200) (+ (- h 100) y) x 100 "#B4B4B2" "#B4B4B200" 
-                (+ x 100) (+ (- h 100) y) (+ x 100) (+ (- h 100) 500))
-  #_(gradient ctx (+ x 100) y 100 100 "#B4B4B2" "#B4B4B200" 
-                (+ x 200) (+ y 100) (+ x 150) (+ y 50))     ;; top left
-  #_(gradient ctx (+ x 100) (+ (- h 100) y) 100 100 "#B4B4B2" "#B4B4B200" 
-                (+ x 200) (+ (- h 100) y) (+ x 150) (+ (- h 50) y))  ;; bottom left
-  #_(gradient ctx (+ x (- w 200)) y 100 100 "#B4B4B2" "#B4B4B200" 
-                (+ x (- w 200)) (+ y 100) (+ x (- w 150)) (+ y 50))    ;; top right
-  #_(gradient ctx (+ x (- w 200)) (+ (- h 100) y) 100 100 "#B4B4B2" "#B4B4B200" 
-                (+ x (- w 200)) (+ (- h 100) y) (+ x (- w 150)) (+ (- h 100) y 50))) ;; bottom right
 
 (defn bg-grad [ctx x y w h]
     (gradient ctx (+ x 100) (+ y 100) (/ w 2) (- h 200) "#B4B4B2" "#B4B4B200"
@@ -207,24 +134,74 @@
     (gradient ctx (+ x (- w 200)) (+ (- h 100) y) 100 100 "#B4B4B2" "#B4B4B200"
               (+ x (- w 200)) (+ (- h 100) y) (+ x (- w 150)) (+ (- h 100) y 50))) ;; bottom right
 
-(let [x 800 y 400 w 1200 h 800
+(defn massage-oil []
+  (let [x 800 y 400 w 1200 h 800
+        canvas (.getElementById js/document "canvas")
+        ctx    (.getContext canvas "2d")]
+    (.clearRect ctx 0 0 3840 2160)
+    (draw ctx "img\\topicals\\body-oil-3-transformed.png" x y w h)
+    (bg-grad ctx 800 400 w h)
+    (bg-grad ctx 840 290 1150 240)
+    (label ctx (+ x 190) 350 900 120 "CBD Massage oil" "black")
+    (bg-grad ctx 1160 1050 500 250)
+    (label ctx (+ x 490) (+ y h -50) 200 110 "$40" "black")
+    ))
+
+(defn balm []
+  (let [x 800 y 400 w 1200 h 1200
+        canvas (.getElementById js/document "canvas")
+        ctx    (.getContext canvas "2d")]
+    (.clearRect ctx 0 0 3840 2160)
+    (bg-grad ctx x y w h)
+    (bg-grad ctx x 290 1190 240)
+    (label ctx (+ x 120) 350 900 120 "No Mess CBD Balm" "black")
+    (bg-grad ctx 1160 1450 500 250)
+    (label ctx (+ x 490) (+ y h -50) 200 110 "$30" "black")
+    (draw ctx "img\\topicals\\HHF-Balms-ES-transformed.png"
+          x y 1200 1200)))
+
+(defn cbd-lotion-prices [ctx x y]
+  (let [x1 x y1 (+ y 1000)
+        x2 (+ x 300) y2 (+ y 1115)
+        x3 (+ x 650) y3 (+ y 1130)
+        y4 (+ y 1410)
+        h  120 w1 350 w2 350]
+    (label ctx x2 y1 w2 h "100mL" "green")
+    (label ctx x2 y2 w2 h "50mL" "green")
+    (label ctx x3 y1 w1 h " $30" "black")
+    (label ctx x3 y2 w1 h " $15" "black")))
+
+(defn lotion []
+  (let [x 500
+        canvas (.getElementById js/document "canvas")
+        ctx    (.getContext canvas "2d")]
+    (.clearRect ctx 0 0 3840 2160)
+    (bg-grad ctx x 0 1190 240)
+    (bg-grad ctx (+ x 300) 270 1350 700)
+    (draw ctx "img\\topicals\\IMG_7812touched-up-and-dodged-e1637356531474-transformed.png"
+          (+ x 400) 1050 1200 800)
+    (bg-grad ctx (+ x 300) 1150 1350 700)
+    (draw ctx "img\\topicals\\IMG_7520-removebg-preview-1-2-transformed.png"
+          (+ x 400) 200 1200 800)
+    (label ctx 920 150 1150 120 "Extra Strength CBD Lotion" "black")
+    (cbd-lotion-prices ctx (+ x 360) -30))
+  )
+
+(let [x 500
       canvas (.getElementById js/document "canvas")
       ctx    (.getContext canvas "2d")]
   (.clearRect ctx 0 0 3840 2160)
-  ;(bg-grad ctx x y w h)
- ; (roundedRect ctx 1300 500 500 400 45 "#977F47c0")
-  ;(bg-grad ctx 800 400 1000 600)
-  
-  
-  ;(roundedRect ctx 800 400 1000 600 45 "#977F47c0")
-  (draw ctx "img\\topicals\\body-oil-3-transformed.png" x y w h)
-  (bg-grad ctx 800 400 w h)
-  (label ctx (+ x 150) 150 900 120 "CBD Massage oil" "black")
-  (bg-grad ctx 1130 1220 500 250)
-  (label ctx (+ x 450) (+ y h 100) 200 110 "$40" "black")
-  ;(rad-grad ctx 100 100 300 300 "#B4B4B2" "#B4B4B200" 220 200, 30, 220, 200, 70)
-  ;(draw ctx "img\\topicals\\bg-topicals.png")
-)
+  (bg-grad ctx 700 100 1550 240)
+  (bg-grad ctx 900 950 1150 240)
+  (bg-grad ctx 900 950 1150 240)
+  (bg-grad ctx (+ x 300) 270 1350 700)
+  (draw ctx "img\\topicals\\IMG_7812touched-up-and-dodged-e1637356531474-transformed.png"
+        (+ x 400) 1050 1200 800)
+  (bg-grad ctx (+ x 300) 1150 1350 700)
+  (draw ctx "img\\topicals\\IMG_7520-removebg-preview-1-2-transformed.png"
+        (+ x 400) 200 1200 800)
+  (label ctx 840 150 1150 120 "Extra Strength CBD Lotion" "black")
+  (cbd-lotion-prices ctx (+ x 360) -30))
 
 (defn app []
   [:div#app
