@@ -10,6 +10,22 @@ Investigated possible technologies to use and settled on HTML5 Canvas for the im
 
 Scraped the website for image assets and found a few that could be upscaled/tiled into nice looking [4k wallpapers](backgrounds).
 
+### Objective
+
+To create a menu system where an image sequence can be generated based on the current inventory, so it can be easily updated to display the correct products at the correct prices.
+
+### Image presentation/manipulation - HTML5 Canvas
+
+Canvas gives efficient programmatic access to the pixel data and leverages the browser's renderer.
+
+### Video composition - FFmpeg
+
+Each product page consists of 2 "layers", the background and the product/price table. FFmpeg is used to compose images into video.
+
+## Idea: Hardware solution
+
+Instead of displaying the images using browser technology which requires an entire computer, we could instead flash a microcontroller to display them. Besides eliminating the need for a dedicated computer/keyboard/mouse just for signage, it also has the advantage of booting up instantaneously since it no longer requires an operating system. This should then be followed by adding a system for updating the unit's firmware when you want to change the prices or reflect stock updates.
+
 ## Development
 
 You'll likely want to change the name from `shadow-reagent` to whatever your project is called. Here's where you need to do that:
