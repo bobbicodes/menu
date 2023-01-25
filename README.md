@@ -2,6 +2,14 @@
 
 ![animated slide](happyhemp-hd.gif)
 
+## Progress report Jan. 24
+
+Investigated possible technologies to use and settled on HTML5 Canvas for the image manipulation and FFmpeg for video composition.
+
+### Background images
+
+Scraped the website for image assets and found a few that could be upscaled/tiled into nice looking 4k wallpapers.
+
 ## Development
 
 You'll likely want to change the name from `shadow-reagent` to whatever your project is called. Here's where you need to do that:
