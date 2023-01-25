@@ -8,7 +8,7 @@ Investigated possible technologies to use and settled on HTML5 Canvas for the im
 
 ### Background images
 
-Scraped the website for image assets and found a few that could be upscaled/tiled into nice looking 4k wallpapers.
+Scraped the website for image assets and found a few that could be upscaled/tiled into nice looking [4k wallpapers](backgrounds).
 
 ## Development
 
