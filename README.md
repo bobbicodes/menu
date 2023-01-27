@@ -26,6 +26,8 @@ Each product page consists of 2 "layers", the background and the product/price t
 
 Instead of displaying the images using browser technology which requires an entire computer, we could instead flash a microcontroller to display them. Besides eliminating the need for a dedicated computer/keyboard/mouse just for signage, it also has the advantage of booting up instantaneously since it no longer requires an operating system. This should then be followed by adding a system for updating the unit's firmware when you want to change the prices or reflect stock updates.
 
+A quick search for UHD 4k capable boards with HDMI found me this for the modest price of $13.50: https://www.aliexpress.us/item/3256802965790134.html
+
 ## Development
 
 You'll likely want to change the name from `shadow-reagent` to whatever your project is called. Here's where you need to do that:
