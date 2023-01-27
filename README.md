@@ -28,6 +28,8 @@ Instead of displaying the images using browser technology which requires an enti
 
 A quick search for UHD 4k capable boards with HDMI found me this for the modest price of $13.50: https://www.aliexpress.us/item/3256802965790134.html
 
+It would go into a 3d-printed enclosure with custom buttons on it for controlling the display like pause/resume, advance slide (so if a customer is interested in a product, it will stay on the screen to avoid having to wait for the slideshow over again). The most important part will be making a system for updating it by connecting it to a PC ad flashing it with the newly generated images. 
+
 ## Development
 
 You'll likely want to change the name from `shadow-reagent` to whatever your project is called. Here's where you need to do that:
